@@ -69,8 +69,8 @@ In this section, you create an Amazon Lambda function to validate the data that 
 
   3. Complete the ```recommend_portfolio``` function by adding the following validation rules:
 
-    - The value of **age** should be greater than zero and less than 65.
-    - The value of **investment_amount** should be greater than or equal to 5000.
+    - The value of age* should be greater than zero and less than 65.
+    - The value of investment_amount should be greater than or equal to 5000.
 
   4. Complete the starter code so that once the intent is fulfilled, the bot responds with an investment recommendation based on the selected risk level, as follows:
 
