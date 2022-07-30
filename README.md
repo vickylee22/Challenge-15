@@ -37,6 +37,7 @@ In this section, you create the robo advisor bot and add an intent with its corr
 ![15-4-bot-slots](https://user-images.githubusercontent.com/103230949/181870158-40e22942-5214-425f-8848-551023cf65ee.png)
 
 > **IMPORTANT**
+
 Remember to mark all the slots as required, as the following image shows:
 ![15-4-slots-marked-as-required](https://user-images.githubusercontent.com/103230949/181870171-b712ae43-32da-4f8e-861f-80003a7a903b.png)
 
@@ -53,6 +54,7 @@ In this section, you build and test your robo advisor. To do so, complete the fo
   2. When the build finishes, test it in the “Test bot” pane. The following animation shows a sample test conversation:
 ![15-4-robo-advisor-test-without-lambda](https://user-images.githubusercontent.com/103230949/181870184-807b2be9-73f0-4768-89e7-68ef846473dc.gif)
 
+
 In the preceding animation, a user starts a dialogue with the robo advisor. The dialogue is as follows:
 ![dialogue](https://user-images.githubusercontent.com/103230949/181870198-13561adc-11b6-4c29-8e00-88873f636f0d.png)
 
@@ -67,8 +69,8 @@ In this section, you create an Amazon Lambda function to validate the data that 
 
   3. Complete the ```recommend_portfolio``` function by adding the following validation rules:
 
-    - The value of ```age``` should be greater than zero and less than 65.
-    - The value of ```investment_amount``` should be greater than or equal to 5000.
+    - The value of **_age_** should be greater than zero and less than 65.
+    - The value of **_investment_amount_** should be greater than or equal to 5000.
 
   4. Complete the starter code so that once the intent is fulfilled, the bot responds with an investment recommendation based on the selected risk level, as follows:
 
