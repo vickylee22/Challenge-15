@@ -1,4 +1,4 @@
-# **Challenge-15 Instructions**
+# **Challenge-15 RoboAdvisors Instructions**
 This section divides the Challenge instructions into the following three steps:
 
   1. Configure the initial robo advisor
