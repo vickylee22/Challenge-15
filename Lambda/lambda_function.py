@@ -50,11 +50,32 @@ def validate_data(age, investment_amount, risk_level, intent_request):
         risk_level = risk_level.lower()
         if risk_level not in ["none", "low", "medium", "high"]:
             return build_validation_result(False, "riskLevel", "Risk level input option invaild, please select an option from the list provided.",)
- 
+
 # A true results is returned if age, investment amount and risk level are valid
     return build_validation_result(True, None, None)
 
+def get_investment_recommendation(risk_level):
+    
+    levels = {
+        "none": "100% bonds (AGG), 0% equities (SPY)",
+        "low": "60% bonds (AGG), 40% equities (SPY)",
+        "medium": "40% bonds (AGG), 60% equities (SPY)",
+        "high": "20% bonds (AGG), 80% equities (SPY)"
+    }
+    
+    return levels[risk_level.lower()]
 
+# Get the initial investment recommendation
+#    if risk_level == 'None':
+#        initial_recommendation = "None: 100% bonds (AGG), 0% equities (SPY)"
+#    elif risk_level == 'Low':
+#        initial_recommendation = "Low: 60% bonds (AGG), 40% equities (SPY)"
+#    elif risk_level == 'Medium':
+#        initial_recommendation = "Medium: 40% bonds (AGG), 60% equities (SPY)"
+#    elif risk_level == 'High':
+#        initial_recommendation = "High: 20% bonds (AGG), 80% equities (SPY)"
+#    else:
+#        initial_recommendation = "Error with the risk level.  Please try again with an option from list provided."
 
 ### Dialog Actions Helper Functions ###
 def get_slots(intent_request):
@@ -80,7 +101,6 @@ def elicit_slot(session_attributes, intent_name, slots, slot_to_elicit, message)
         },
     }
 
-
 def delegate(session_attributes, slots):
     """
     Defines a delegate slot type response.
@@ -90,23 +110,6 @@ def delegate(session_attributes, slots):
         "sessionAttributes": session_attributes,
         "dialogAction": {"type": "Delegate", "slots": slots},
     }
-
-
-def close(session_attributes, fulfillment_state, message):
-    """
-    Defines a close slot type response.
-    """
-
-    response = {
-        "sessionAttributes": session_attributes,
-        "dialogAction": {
-            "type": "Close",
-            "fulfillmentState": fulfillment_state,
-            "message": message,
-        },
-    }
-
-    return response
 
 """
 Step 3: Enhance the Robo Advisor with an Amazon Lambda Function
@@ -151,12 +154,6 @@ def recommend_portfolio(intent_request):
     risk_level = get_slots(intent_request)["riskLevel"]
     source = intent_request["invocationSource"]
     
-    if age: 
-        age = int(age)
-        
-    if risk_level:
-        risk_level = risk_level.lower()
-
 # This code performs basic validation on the supplied input slots.        
     if source == "DialogCodeHook":
 
@@ -183,20 +180,11 @@ def recommend_portfolio(intent_request):
         
         return delegate(output_session_attributes, get_slots(intent_request))
 
-# Get the initial investment recommendation
-        if risk_level == 'None':
-            initial_recommendation = "None: 100% bonds (AGG), 0% equities (SPY)"
-        elif risk_level == 'Low':
-            initial_recommendation = "Low: 60% bonds (AGG), 40% equities (SPY)"
-        elif risk_level == 'Medium':
-            initial_recommendation = "Medium: 40% bonds (AGG), 60% equities (SPY)"
-        elif risk_level == 'High':
-            initial_recommendation = "High: 20% bonds (AGG), 80% equities (SPY)"
-        else:
-            initial_recommendation = "Error with the risk level.  Please try again."
-    
+
 # Return a message with the initial recommendation based on the risk level.    
-        return close(
+    initial_recommendation = get_investment_recommendation(risk_level)
+        
+    return close(
             intent_request["sessionAttributes"],
             "Fulfilled",
             {
@@ -208,6 +196,22 @@ def recommend_portfolio(intent_request):
                 ),
             },
         )
+
+def close(session_attributes, fulfillment_state, message):
+    """
+    Defines a close slot type response.
+    """
+
+    response = {
+        "sessionAttributes": session_attributes,
+        "dialogAction": {
+            "type": "Close",
+            "fulfillmentState": fulfillment_state,
+            "message": message,
+        },
+    }
+
+    return response
         
 ### Intents Dispatcher ###
 def dispatch(intent_request):
